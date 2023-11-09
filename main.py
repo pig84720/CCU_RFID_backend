@@ -100,9 +100,7 @@ def card_remove(
 def get_card_list():
     try:
         with engine.connect() as connection:
-            sql="""
-            select * from tb_clock_in_record 
-            """
+            sql = "select * from tb_clock_in_record"
             result = connection.execute(sql).fetchall()
             return BaseAPIResponse(success=True, data=result, total=len(result))
     except Exception as ex:
