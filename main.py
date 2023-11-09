@@ -100,10 +100,10 @@ def card_remove(
 def get_card_list():
     try:
         with engine.connect() as connection:
-            sql_get_clock_in_list="""
+            sql="""
             select * from tb_clock_in_record 
             """
-            result = connection.execute(sql_get_clock_in_list).fetchall()
+            result = connection.execute(sql).fetchall()
             return BaseAPIResponse(success=True, data=result, total=len(result))
     except Exception as ex:
         return BaseAPIResponse.parse_obj({"success": False, "message": str(ex)})
@@ -113,10 +113,10 @@ def get_card_list():
 def get_clock_in_error_list():
     try:
         with engine.connect() as connection:
-            sql_get_clock_in_error_list="""
+            sql="""
             select * from tb_clock_in_error_record 
             """
-            result = connection.execute(sql_get_clock_in_error_list).fetchall()
+            result = connection.execute(sql).fetchall()
             return BaseAPIResponse(success=True, data=result, total=len(result))
     except Exception as ex:
         return BaseAPIResponse.parse_obj({"success": False, "message": str(ex)})
