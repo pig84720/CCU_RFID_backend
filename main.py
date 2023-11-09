@@ -103,10 +103,7 @@ def get_card_list():
             sql="""
             select * from tb_clock_in_record 
             """
-            # result = connection.execute(sql).fetchall()
-            result = connection.execute("""
-            select * from tb_clock_in_record 
-            """).fetchall()
+            result = connection.execute(sql).fetchall()
             return BaseAPIResponse(success=True, data=result, total=len(result))
     except Exception as ex:
         return BaseAPIResponse.parse_obj({"success": False, "message": str(ex)})
@@ -124,12 +121,3 @@ def get_clock_in_error_list():
     except Exception as ex:
         return BaseAPIResponse.parse_obj({"success": False, "message": str(ex)})
 
-
-# test
-@app.get("/test", description="test", response_model=BaseAPIResponse)
-def test():
-    try:
-        with engine.connect() as connection:
-            return BaseAPIResponse(success=True, data='test')
-    except Exception as ex:
-        return BaseAPIResponse.parse_obj({"success": False, "message": str(ex)})
