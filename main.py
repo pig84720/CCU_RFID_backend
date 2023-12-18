@@ -21,12 +21,18 @@ def clock_in(
 ):
     try:
         with engine.connect() as connection:
+            #檢查卡號是否為空
+            if(params.CardNo == "" or params.CardNo == None):
+                raise Exception("卡號不可為空！")
+            
             # 檢查卡號是否已註冊
             checked_card_no_sql = """
             SELECT * FROM tb_card_list WHERE CardNo = %s
             """
             result = connection.execute(checked_card_no_sql, (params.CardNo,))
             rows = result.fetchall()
+            
+            print(rows)
 
             if len(rows) > 0:
                 # 卡號已註冊，進行打卡
@@ -54,6 +60,14 @@ def card_register(
 ):
     try:
         with engine.connect() as connection:
+            #檢查卡號是否為空
+            if(params.CardNo == "" or params.CardNo == None):
+                raise Exception("卡號不可為空！")
+            
+            #檢查使用者名稱是否為空
+            if(params.UserName == "" or params.UserName == None):
+                raise Exception("使用者名稱不可為空！")
+
             # 檢查卡號是否已註冊
             checked_card_no_sql = """
             SELECT * FROM tb_card_list WHERE CardNo = %s
@@ -110,7 +124,7 @@ def get_card_list():
     try:
         with engine.connect() as connection:
             sql="""
-            select * from tb_clock_in_record 
+            select Seqno, ClockInTime, UserName from tb_clock_in_record 
             """
             result = connection.execute(sql).fetchall()
             return BaseAPIResponse(success=True, data=result, total=len(result))
